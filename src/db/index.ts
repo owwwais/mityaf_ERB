@@ -13,8 +13,10 @@ export const dataDir = () => process.env.MITYAF_DATA_DIR ?? path.join(process.cw
 export const migrationsFolder = () => path.join(process.cwd(), "drizzle");
 
 /**
- * DATABASE_URL set  → any hosted Postgres (Neon, Supabase, RDS…). Run `npm run db:migrate` once per deploy.
- * DATABASE_URL empty → embedded Postgres (PGlite) persisted under .data/, migrated automatically.
+ * DATABASE_URL set  → any hosted Postgres (Neon, Supabase, RDS…).
+ * DATABASE_URL empty → embedded Postgres (PGlite) persisted under .data/.
+ * Either way pending migrations are applied on first use, so a deploy needs no extra step.
+ * Set MITYAF_AUTO_MIGRATE=0 to manage the hosted schema yourself with `npm run db:migrate`.
  */
 async function connect(): Promise<DB> {
   const url = process.env.DATABASE_URL?.trim();
@@ -22,8 +24,19 @@ async function connect(): Promise<DB> {
     const { default: postgres } = await import("postgres");
     const { drizzle } = await import("drizzle-orm/postgres-js");
     // prepare:false keeps us compatible with transaction-mode poolers (Supabase, PgBouncer).
-    const client = postgres(url, { prepare: false, max: 5, idle_timeout: 20 });
-    return drizzle(client, { schema, casing: "snake_case" }) as unknown as DB;
+    const client = postgres(url, { prepare: false, max: 5, idle_timeout: 20, onnotice: () => {} });
+    const db = drizzle(client, { schema, casing: "snake_case" });
+    if (process.env.MITYAF_AUTO_MIGRATE !== "0") {
+      const { migrate } = await import("drizzle-orm/postgres-js/migrator");
+      try {
+        await migrate(db, { migrationsFolder: migrationsFolder() });
+      } catch {
+        // Two cold starts can race on the very first deploy; the loser retries once the winner has committed.
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+        await migrate(db, { migrationsFolder: migrationsFolder() });
+      }
+    }
+    return db as unknown as DB;
   }
 
   const { PGlite } = await import("@electric-sql/pglite");

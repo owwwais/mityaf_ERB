@@ -67,7 +67,7 @@ export default async function DashboardPage() {
               { href: "/pricing/new", icon: Calculator, title: "٣. أول عرض سعر", text: "أدخل بنود العمل ودَع النظام يقترح السعر." },
             ].map((s) => (
               <li key={s.href}>
-                <Link href={s.href} className="flex h-full gap-3 rounded-lg border border-line p-3.5 transition-colors hover:border-primary hover:bg-primary-soft">
+                <Link href={s.href} className="flex h-full gap-3 rounded-sm border border-line p-3.5 transition-colors hover:border-accent hover:bg-primary-soft">
                   <s.icon size={19} className="mt-0.5 shrink-0 text-primary-ink" aria-hidden />
                   <span>
                     <span className="block text-sm font-semibold">{s.title}</span>

@@ -1,84 +1,165 @@
 @import "tailwindcss";
 
+/* ── هوية مطياف البصرية (mityaf.com) ──────────────────────────────
+   خط «Mityaf»: تجارب للعربية وثمانية للاتينية والأرقام، و Plex Mono للتسميات التقنية. */
+@font-face {
+  font-family: "Mityaf";
+  src: url("/fonts/tajarib-300.woff2") format("woff2");
+  font-weight: 300;
+  font-display: swap;
+  unicode-range: U+6??, U+750-77F, U+8A0-8FF, U+FB50-FDFF, U+FE70-FEFF, U+200C-200F;
+}
+@font-face {
+  font-family: "Mityaf";
+  src: url("/fonts/tajarib-400.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+  unicode-range: U+6??, U+750-77F, U+8A0-8FF, U+FB50-FDFF, U+FE70-FEFF, U+200C-200F;
+}
+@font-face {
+  font-family: "Mityaf";
+  src: url("/fonts/tajarib-500.woff2") format("woff2");
+  font-weight: 500 600;
+  font-display: swap;
+  unicode-range: U+6??, U+750-77F, U+8A0-8FF, U+FB50-FDFF, U+FE70-FEFF, U+200C-200F;
+}
+@font-face {
+  font-family: "Mityaf";
+  src: url("/fonts/tajarib-700.woff2") format("woff2");
+  font-weight: 700 900;
+  font-display: swap;
+  unicode-range: U+6??, U+750-77F, U+8A0-8FF, U+FB50-FDFF, U+FE70-FEFF, U+200C-200F;
+}
+@font-face {
+  font-family: "Mityaf";
+  src: url("/fonts/thmanyah-300.woff2") format("woff2");
+  font-weight: 300;
+  font-display: swap;
+  unicode-range: U+??, U+131, U+152-153, U+2000-206F, U+20AC, U+2122, U+2190-2193, U+2212;
+}
+@font-face {
+  font-family: "Mityaf";
+  src: url("/fonts/thmanyah-400.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+  unicode-range: U+??, U+131, U+152-153, U+2000-206F, U+20AC, U+2122, U+2190-2193, U+2212;
+}
+@font-face {
+  font-family: "Mityaf";
+  src: url("/fonts/thmanyah-500.woff2") format("woff2");
+  font-weight: 500 600;
+  font-display: swap;
+  unicode-range: U+??, U+131, U+152-153, U+2000-206F, U+20AC, U+2122, U+2190-2193, U+2212;
+}
+@font-face {
+  font-family: "Mityaf";
+  src: url("/fonts/thmanyah-700.woff2") format("woff2");
+  font-weight: 700 900;
+  font-display: swap;
+  unicode-range: U+??, U+131, U+152-153, U+2000-206F, U+20AC, U+2122, U+2190-2193, U+2212;
+}
+@font-face {
+  font-family: "Plex Mono";
+  src: url("/fonts/plex-mono-400.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Plex Mono";
+  src: url("/fonts/plex-mono-500.woff2") format("woff2");
+  font-weight: 500 700;
+  font-display: swap;
+}
+
 /* ── Design tokens ─────────────────────────────────────────────── */
-:root {
+:root,
+.force-light {
   color-scheme: light;
-  --bg: #f5f6f8;
-  --surface: #ffffff;
-  --surface-2: #f1f3f6;
-  --border: #e2e5ea;
-  --border-strong: #cdd2da;
-  --text: #0f172a;
-  --text-2: #475569;
-  --text-3: #64748b;
+  /* ألوان الهوية كما في الموقع */
+  --bg: #f2f1ef;
+  --surface: #faf9f7;
+  --tile: #fbfbf9;
+  --text: #1d2321;
+  --text-strong: #111514;
+  --text-2: #48514e;
+  --text-3: #656d6a;
+  --border: #1115141f;
+  --border-strong: #1115144d;
+  --accent: #315f88;
+  /* الأطياف الأربعة: أعمال، شفرة، برامج، عدسة */
+  --business-ink: #283f55;
+  --code-ink: #315f88;
+  --programs-ink: #2f716a;
+  --lens-ink: #9e5641;
 
-  --primary: #4338ca;
-  --primary-hover: #3730a3;
-  --primary-fg: #ffffff;
-  --primary-soft: #eef0ff;
-  --primary-ink: #3730a3;
+  --surface-2: color-mix(in srgb, var(--text-strong) 5%, var(--surface));
+  --primary: var(--text);
+  --primary-hover: var(--text-strong);
+  --primary-fg: var(--bg);
+  --primary-soft: color-mix(in srgb, var(--accent) 10%, var(--surface));
+  --primary-ink: var(--accent);
 
-  --success: #047857;
-  --success-soft: #e8f8f1;
-  --warning: #a8590a;
-  --warning-soft: #fdf4e3;
-  --danger: #b91c1c;
-  --danger-soft: #fdecec;
-  --info: #1d4ed8;
-  --info-soft: #e9f1ff;
+  --success: #2f716a;
+  --warning: #8c5a14;
+  --danger: #a4382c;
+  --info: #315f88;
+  --success-soft: color-mix(in srgb, var(--success) 11%, var(--surface));
+  --warning-soft: color-mix(in srgb, #c98a1b 16%, var(--surface));
+  --danger-soft: color-mix(in srgb, var(--danger) 10%, var(--surface));
+  --info-soft: color-mix(in srgb, var(--info) 10%, var(--surface));
 
-  --sidebar: #0f1424;
-  --sidebar-text: #aab3c5;
-  --sidebar-active: #ffffff;
+  /* الرسوم: أزرق «شفرة» وطيني «عدسة» بدرجة أشبع تجتاز فحص عمى الألوان والتباين */
+  --series-1: #2d66a3;
+  --series-2: #b5603f;
+  --status-good: #2f8a78;
+  --status-warning: #d69a1c;
+  --status-critical: #c2452f;
+  --grid: #11151414;
 
-  /* Charts — validated categorical pair + status fills */
-  --series-1: #2a78d6;
-  --series-2: #eb6834;
-  --status-good: #0ca30c;
-  --status-warning: #fab219;
-  --status-critical: #d03b3b;
-  --grid: #e6e9ee;
-
-  --spectrum: linear-gradient(90deg, #7c3aed, #2563eb, #0d9488, #eab308, #ea580c, #e11d48);
-  --shadow: 0 1px 2px rgb(15 23 42 / 0.04), 0 1px 3px rgb(15 23 42 / 0.06);
-  --shadow-lg: 0 10px 30px rgb(15 23 42 / 0.16);
+  --spectrum: linear-gradient(90deg, var(--business-ink) 0 25%, var(--code-ink) 25% 50%, var(--programs-ink) 50% 75%, var(--lens-ink) 75% 100%);
+  --shadow: none;
+  --shadow-lg: 0 20px 44px -20px #1115144d;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     color-scheme: dark;
-    --bg: #0b0f17;
-    --surface: #121826;
-    --surface-2: #1a2233;
-    --border: #253044;
-    --border-strong: #37445b;
-    --text: #e8ecf3;
-    --text-2: #b6c0cf;
-    --text-3: #8b97aa;
+    --bg: #111514;
+    --surface: #202725;
+    --tile: #262e2b;
+    --text: #e6e8e4;
+    --text-strong: #fbfbf9;
+    --text-2: #b8c2c1;
+    --text-3: #878e8b;
+    --border: #e6e8e424;
+    --border-strong: #e6e8e461;
+    --accent: #5e90be;
+    --business-ink: #748fa9;
+    --code-ink: #5e90be;
+    --programs-ink: #4c9990;
+    --lens-ink: #c9826c;
 
-    --primary: #818cf8;
-    --primary-hover: #a5b4fc;
-    --primary-fg: #0b0f17;
-    --primary-soft: #1f2347;
-    --primary-ink: #c7d2fe;
+    --surface-2: color-mix(in srgb, var(--text-strong) 7%, var(--surface));
+    --primary-soft: color-mix(in srgb, var(--accent) 18%, var(--surface));
+    --primary-ink: #86b0d8;
 
-    --success: #34d399;
-    --success-soft: #0b2a20;
-    --warning: #fbbf24;
-    --warning-soft: #2c2108;
-    --danger: #f87171;
-    --danger-soft: #311414;
-    --info: #7cb0ff;
-    --info-soft: #0f2140;
+    --success: #6db3aa;
+    --warning: #d9a548;
+    --danger: #e59585;
+    --info: #86b0d8;
+    --success-soft: color-mix(in srgb, var(--success) 14%, var(--surface));
+    --warning-soft: color-mix(in srgb, var(--warning) 14%, var(--surface));
+    --danger-soft: color-mix(in srgb, var(--danger) 14%, var(--surface));
+    --info-soft: color-mix(in srgb, var(--info) 14%, var(--surface));
 
-    --sidebar: #080b12;
+    --series-1: #5591cf;
+    --series-2: #c97656;
+    --status-good: #4fae9b;
+    --status-warning: #e0b04a;
+    --status-critical: #e06a52;
+    --grid: #e6e8e41a;
 
-    --series-1: #3987e5;
-    --series-2: #d95926;
-    --grid: #232d40;
-
-    --shadow: 0 1px 2px rgb(0 0 0 / 0.3);
-    --shadow-lg: 0 10px 30px rgb(0 0 0 / 0.5);
+    --shadow-lg: 0 24px 56px -24px #000000d9;
   }
 }
 
@@ -86,11 +167,14 @@
   --color-bg: var(--bg);
   --color-surface: var(--surface);
   --color-surface-2: var(--surface-2);
+  --color-tile: var(--tile);
   --color-line: var(--border);
   --color-line-strong: var(--border-strong);
   --color-ink: var(--text);
+  --color-ink-strong: var(--text-strong);
   --color-ink-2: var(--text-2);
   --color-ink-3: var(--text-3);
+  --color-accent: var(--accent);
   --color-primary: var(--primary);
   --color-primary-hover: var(--primary-hover);
   --color-primary-fg: var(--primary-fg);
@@ -104,8 +188,12 @@
   --color-danger-soft: var(--danger-soft);
   --color-info: var(--info);
   --color-info-soft: var(--info-soft);
-  --color-sidebar: var(--sidebar);
-  --font-sans: "IBM Plex Sans Arabic", ui-sans-serif, system-ui, "Segoe UI", Tahoma, sans-serif;
+  --font-sans: "Mityaf", "Tahoma", system-ui, sans-serif;
+  --font-mono: "Plex Mono", "Mityaf", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  /* مقياس الزوايا في الهوية: عناصر التحكم 6، البطاقات 10، النوافذ 16 */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
   --shadow-card: var(--shadow);
   --shadow-pop: var(--shadow-lg);
 }
@@ -118,22 +206,23 @@
   body {
     background: var(--bg);
     color: var(--text);
-    font-size: 15px;
-    line-height: 1.6;
+    font-size: 15.5px;
+    line-height: 1.65;
     -webkit-font-smoothing: antialiased;
   }
   h1,
   h2,
   h3 {
-    line-height: 1.3;
+    color: var(--text-strong);
+    line-height: 1.35;
     text-wrap: balance;
   }
   :focus-visible {
-    outline: 2px solid var(--primary);
+    outline: 2px solid var(--accent);
     outline-offset: 2px;
   }
   ::selection {
-    background: var(--primary-soft);
+    background: color-mix(in srgb, var(--accent) 22%, transparent);
   }
   /* Numbers stay left-to-right and aligned inside right-to-left text. */
   .num {
@@ -146,21 +235,26 @@
 
 @layer components {
   .card {
-    @apply rounded-xl border border-line bg-surface shadow-card;
+    @apply rounded-md border border-line bg-surface;
+  }
+
+  /* تسمية تقنية صغيرة بخط Plex Mono كما في الموقع: «02 /» */
+  .eyebrow {
+    @apply font-mono text-[11.5px] text-ink-3;
   }
 
   .label {
-    @apply mb-1.5 block text-[13px] font-medium text-ink-2;
+    @apply mb-1.5 block text-[13.5px] font-medium text-ink-2;
   }
   .input {
-    @apply block h-10 w-full rounded-lg border border-line-strong bg-surface px-3 text-[15px] text-ink transition-colors placeholder:text-ink-3/70;
+    @apply block h-10 w-full rounded-sm border border-line-strong bg-tile px-3 text-[15px] text-ink transition-colors placeholder:text-ink-3/75;
   }
   .input:hover {
     border-color: var(--text-3);
   }
   .input:focus {
-    @apply border-primary outline-none;
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 22%, transparent);
+    @apply border-accent outline-none;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
   }
   .input[aria-invalid="true"] {
     @apply border-danger;
@@ -176,25 +270,25 @@
   }
 
   .btn {
-    @apply inline-flex h-10 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-lg px-4 text-sm font-semibold whitespace-nowrap transition-colors select-none disabled:cursor-not-allowed disabled:opacity-55;
+    @apply inline-flex h-10 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-sm px-4 text-sm font-semibold whitespace-nowrap transition-colors select-none disabled:cursor-not-allowed disabled:opacity-50;
   }
   .btn-primary {
     @apply bg-primary text-primary-fg hover:bg-primary-hover;
   }
   .btn-secondary {
-    @apply border border-line-strong bg-surface text-ink hover:bg-surface-2;
+    @apply border border-line-strong bg-tile/60 text-ink hover:bg-surface-2;
   }
   .btn-ghost {
     @apply text-ink-2 hover:bg-surface-2 hover:text-ink;
   }
   .btn-danger {
-    @apply border border-danger/30 bg-danger-soft text-danger hover:border-danger/60;
+    @apply border border-danger/35 bg-danger-soft text-danger hover:border-danger/70;
   }
   .btn-sm {
-    @apply h-8 gap-1.5 rounded-md px-2.5 text-[13px];
+    @apply h-8 gap-1.5 px-2.5 text-[13px];
   }
   .btn-icon {
-    @apply h-8 w-8 rounded-md px-0;
+    @apply h-8 w-8 px-0;
   }
 
   .table-wrap {
@@ -204,7 +298,7 @@
     @apply w-full border-collapse text-sm;
   }
   .table th {
-    @apply border-b border-line px-4 py-2.5 text-start text-xs font-semibold whitespace-nowrap text-ink-3;
+    @apply border-b border-line px-4 py-2.5 text-start text-[12.5px] font-medium whitespace-nowrap text-ink-3;
   }
   .table td {
     @apply border-b border-line px-4 py-3 align-middle;
@@ -223,11 +317,17 @@
   }
 
   .chip {
-    @apply inline-flex h-8 items-center gap-1.5 rounded-full border border-line-strong bg-surface px-3 text-[13px] font-medium whitespace-nowrap text-ink-2 transition-colors hover:bg-surface-2;
+    @apply inline-flex h-8 items-center gap-1.5 rounded-sm border border-line-strong bg-tile/60 px-3 text-[13px] font-medium whitespace-nowrap text-ink-2 transition-colors hover:bg-surface-2;
   }
   .chip[aria-current="true"],
   .chip[aria-pressed="true"] {
-    @apply border-primary bg-primary-soft text-primary-ink;
+    @apply border-primary bg-primary text-primary-fg;
+  }
+
+  /* شبكة النقاط الخافتة من خلفية الموقع */
+  .dot-grid {
+    background-image: radial-gradient(circle, color-mix(in srgb, var(--text-strong) 16%, transparent) 1px, transparent 1.4px);
+    background-size: 22px 22px;
   }
 }
 
@@ -252,31 +352,18 @@
 }
 
 dialog.modal {
-  @apply m-auto w-[min(34rem,calc(100vw-1.5rem))] max-w-none rounded-2xl border border-line bg-surface p-0 text-ink shadow-pop;
+  @apply m-auto w-[min(34rem,calc(100vw-1.5rem))] max-w-none rounded-lg border border-line bg-surface p-0 text-ink shadow-pop;
   max-height: calc(100dvh - 2rem);
 }
 dialog.modal.modal-wide {
   width: min(46rem, calc(100vw - 1.5rem));
 }
 dialog.modal::backdrop {
-  background: rgb(8 11 18 / 0.55);
+  background: rgb(17 21 20 / 0.5);
   backdrop-filter: blur(2px);
 }
 
 @media print {
-  :root {
-    color-scheme: light;
-    --bg: #ffffff;
-    --surface: #ffffff;
-    --surface-2: #f4f5f7;
-    --border: #dfe2e7;
-    --text: #0f172a;
-    --text-2: #334155;
-    --text-3: #64748b;
-    --primary: #4338ca;
-    --primary-soft: #eef0ff;
-    --primary-ink: #3730a3;
-  }
   .no-print {
     display: none !important;
   }

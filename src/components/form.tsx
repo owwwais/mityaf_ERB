@@ -70,12 +70,12 @@ export function ActionForm({
       <form ref={formRef} onSubmit={onSubmit} noValidate>
         <div className={className}>{children}</div>
         {result && !result.ok && (
-          <p role="alert" className="mt-4 rounded-lg border border-danger/30 bg-danger-soft px-3 py-2 text-sm text-danger">
+          <p role="alert" className="mt-4 rounded-sm border border-danger/30 bg-danger-soft px-3 py-2 text-sm text-danger">
             {result.message}
           </p>
         )}
         {result?.ok && (successMessage || result.message) && !closeModal && (
-          <p role="status" className="mt-4 rounded-lg border border-success/25 bg-success-soft px-3 py-2 text-sm text-success">
+          <p role="status" className="mt-4 rounded-sm border border-success/25 bg-success-soft px-3 py-2 text-sm text-success">
             {result.message ?? successMessage}
           </p>
         )}
@@ -219,7 +219,7 @@ export function TextAreaField({ label, name, hint, className, ...rest }: BasePro
 export function CheckboxField({ label, name, hint, defaultChecked }: { label: string; name: string; hint?: ReactNode; defaultChecked?: boolean }) {
   return (
     <label className="flex cursor-pointer items-start gap-2.5">
-      <input type="checkbox" name={name} defaultChecked={defaultChecked} className="mt-1 size-4 accent-[var(--primary)]" />
+      <input type="checkbox" name={name} defaultChecked={defaultChecked} className="mt-1 size-4 accent-[var(--accent)]" />
       <span>
         <span className="text-sm font-medium">{label}</span>
         {hint && <span className="block text-xs leading-relaxed text-ink-3">{hint}</span>}

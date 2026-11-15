@@ -98,7 +98,7 @@ export default async function PartnersPage() {
           ) : (
             <ul className="space-y-2.5">
               {settlement.suggestions.map((s, i) => (
-                <li key={i} className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-line px-3.5 py-2.5">
+                <li key={i} className="flex flex-wrap items-center justify-between gap-3 rounded-sm border border-line px-3.5 py-2.5">
                   <span className="min-w-0">
                     <span className="flex flex-wrap items-center gap-2 text-sm">
                       <strong>{s.fromName}</strong>

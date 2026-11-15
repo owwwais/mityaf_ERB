@@ -70,7 +70,7 @@ export function PairedBars({
                 <span className="viz-bar w-3.5 max-w-6 rounded-t sm:w-4" style={{ height: `${(d.b / max) * 100}%`, minHeight: d.b > 0 ? 2 : 0, background: "var(--series-2)" }} />
                 <div
                   className={cx(
-                    "viz-tip absolute bottom-full z-10 mb-1 w-max rounded-lg border border-line bg-surface px-3 py-2 text-xs shadow-pop",
+                    "viz-tip absolute bottom-full z-10 mb-1 w-max rounded-sm border border-line bg-surface px-3 py-2 text-xs shadow-pop",
                     i === 0 ? "start-0" : i === data.length - 1 ? "end-0" : "start-1/2 translate-x-1/2",
                   )}
                   role="tooltip"

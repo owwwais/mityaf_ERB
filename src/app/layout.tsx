@@ -1,8 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import "@fontsource/ibm-plex-sans-arabic/400.css";
-import "@fontsource/ibm-plex-sans-arabic/500.css";
-import "@fontsource/ibm-plex-sans-arabic/600.css";
-import "@fontsource/ibm-plex-sans-arabic/700.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -15,14 +11,18 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f5f6f8" },
-    { media: "(prefers-color-scheme: dark)", color: "#0b0f17" },
+    { media: "(prefers-color-scheme: light)", color: "#f2f1ef" },
+    { media: "(prefers-color-scheme: dark)", color: "#111514" },
   ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ar" dir="rtl">
+      <head>
+        <link rel="preload" href="/fonts/tajarib-400.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/tajarib-700.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+      </head>
       <body>{children}</body>
     </html>
   );

@@ -63,7 +63,7 @@ const toneClass: Record<Tone, string> = {
 
 export function Badge({ tone = "neutral", children }: { tone?: Tone; children: ReactNode }) {
   return (
-    <span className={cx("inline-flex h-6 items-center rounded-full px-2.5 text-xs font-semibold whitespace-nowrap", toneClass[tone])}>
+    <span className={cx("inline-flex h-6 items-center rounded-[5px] px-2 text-xs font-medium whitespace-nowrap", toneClass[tone])}>
       {children}
     </span>
   );
@@ -104,7 +104,7 @@ const alertStyle = {
 export function Alert({ level = "info", title, children }: { level?: keyof typeof alertStyle; title?: ReactNode; children?: ReactNode }) {
   const { cls, Icon } = alertStyle[level];
   return (
-    <div className={cx("flex gap-2.5 rounded-lg border px-3.5 py-2.5 text-[13.5px] leading-relaxed", cls)} role={level === "danger" ? "alert" : "status"}>
+    <div className={cx("flex gap-2.5 rounded-sm border px-3.5 py-2.5 text-[13.5px] leading-relaxed", cls)} role={level === "danger" ? "alert" : "status"}>
       <Icon size={17} className="mt-[3px] shrink-0" aria-hidden />
       <div className="min-w-0 flex-1 text-ink">
         {title && <p className="font-semibold">{title}</p>}
@@ -135,28 +135,25 @@ export function Row({ label, value, strong, muted }: { label: ReactNode; value: 
   );
 }
 
-/** علامة مطياف: منشور بألوان الطيف. */
-export function Logo({ size = 28 }: { size?: number }) {
+/**
+ * شعار مطياف الأصلي (العلامة + الاسم). النسخة الفاتحة تُستخدم تلقائياً في الوضع الداكن،
+ * إلا إذا طُلبت النسخة الداكنة دائماً (للمستندات المطبوعة).
+ */
+export function BrandLogo({ height = 30, alwaysLight }: { height?: number; alwaysLight?: boolean }) {
+  // نسبة أبعاد الشعار الأساسي ≈ 3.87 : 1
+  const width = Math.round(height * 3.87);
   return (
-    <svg width={size} height={size} viewBox="0 0 32 32" role="img" aria-label="مطياف">
-      <defs>
-        <linearGradient id="mityaf-spectrum" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#7c3aed" />
-          <stop offset="0.3" stopColor="#2563eb" />
-          <stop offset="0.55" stopColor="#0d9488" />
-          <stop offset="0.8" stopColor="#eab308" />
-          <stop offset="1" stopColor="#e11d48" />
-        </linearGradient>
-      </defs>
-      <path
-        d="M16 4.5 28 25.5a1.6 1.6 0 0 1-1.4 2.4H5.4A1.6 1.6 0 0 1 4 25.5L16 4.5Z"
-        fill="none"
-        stroke="url(#mityaf-spectrum)"
-        strokeWidth="3.4"
-        strokeLinejoin="round"
-      />
-    </svg>
+    <picture>
+      {!alwaysLight && <source srcSet="/brand/primary-ar-white.svg" media="(prefers-color-scheme: dark)" />}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/brand/primary-ar.svg" alt="مطياف" width={width} height={height} style={{ height, width: "auto" }} />
+    </picture>
   );
+}
+
+/** شريط الأطياف الأربعة: أعمال، شفرة، برامج، عدسة. */
+export function SpectrumBar({ className = "h-1" }: { className?: string }) {
+  return <div className={className} style={{ background: "var(--spectrum)" }} aria-hidden />;
 }
 
 export function Tabs({ items, current }: { items: { href: string; label: string }[]; current: string }) {
@@ -171,7 +168,7 @@ export function Tabs({ items, current }: { items: { href: string; label: string 
             aria-current={active ? "page" : undefined}
             className={cx(
               "-mb-px border-b-2 px-3.5 py-2.5 text-sm font-semibold whitespace-nowrap transition-colors",
-              active ? "border-primary text-primary-ink" : "border-transparent text-ink-3 hover:text-ink",
+              active ? "border-ink-strong text-ink-strong" : "border-transparent text-ink-3 hover:text-ink",
             )}
           >
             {item.label}

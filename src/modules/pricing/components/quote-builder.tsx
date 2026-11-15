@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState, useTransition, type ReactNode } from "react";
 import { Check, ExternalLink, LoaderCircle, Plus, Printer, RotateCcw, Send, X } from "lucide-react";
 import type { Option } from "@/components/form";
-import { Alert, Badge, Row, cx } from "@/components/ui";
+import { Alert, Badge, Row, SpectrumBar, cx } from "@/components/ui";
 import { hours as fmtHours, money, num, pct, weeks as fmtWeeks } from "@/lib/format";
 import { parseNumber } from "@/lib/validation";
 import { acceptQuote, saveQuote, setQuoteStatus, type QuotePayload } from "../actions";
@@ -85,7 +85,7 @@ function Section({ step, title, hint, children }: { step: number; title: string;
   return (
     <section className="card">
       <div className="flex items-start gap-3 border-b border-line px-5 py-3.5">
-        <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-primary-soft text-xs font-bold text-primary-ink">{num(step, 0)}</span>
+        <span className="eyebrow mt-1 shrink-0">{String(step).padStart(2, "0")} /</span>
         <div>
           <h2 className="text-[15px] font-semibold">{title}</h2>
           {hint && <p className="mt-0.5 text-[13px] leading-relaxed text-ink-3">{hint}</p>}
@@ -151,8 +151,8 @@ function PriceLadder({ result, minMarginPct, onPick }: { result: QuoteResult; mi
               onClick={() => onPick(t.price)}
               aria-pressed={active}
               className={cx(
-                "rounded-lg border px-2 py-2 text-center transition-colors",
-                active ? "border-primary bg-primary-soft" : "border-line hover:border-line-strong hover:bg-surface-2",
+                "rounded-sm border px-2 py-2 text-center transition-colors",
+                active ? "border-accent bg-primary-soft" : "border-line hover:border-line-strong hover:bg-surface-2",
               )}
             >
               <span className="block text-[11.5px] font-semibold text-ink-2">{t.label}</span>
@@ -175,10 +175,10 @@ function PriceLadder({ result, minMarginPct, onPick }: { result: QuoteResult; mi
         )}
         <div className="absolute bottom-full mb-1 -translate-x-[-50%]" style={{ insetInlineStart: at(finalPrice) }}>
           <span className="block text-[10.5px] font-bold whitespace-nowrap text-primary-ink">السعر</span>
-          <span className="mx-auto block h-2 w-0.5 bg-primary" />
+          <span className="mx-auto block h-2 w-0.5 bg-accent" />
         </div>
         <span
-          className="absolute top-1/2 size-4 -translate-y-1/2 rounded-full border-2 bg-primary"
+          className="absolute top-1/2 size-4 -translate-y-1/2 rounded-full border-2 bg-accent"
           style={{ insetInlineStart: `calc(${at(finalPrice)} - 8px)`, borderColor: "var(--surface)" }}
           aria-hidden
         />
@@ -481,7 +481,7 @@ export function QuoteBuilder({ quoteId, number, status = "draft", projectId, ini
       {/* ── النتيجة ── */}
       <aside className="space-y-4 lg:sticky lg:top-6">
         <div className="card overflow-hidden">
-          <div className="h-1" style={{ background: "var(--spectrum)" }} aria-hidden />
+          <SpectrumBar />
           <div className="p-5">
             <div className="flex items-center justify-between gap-2">
               <p className="text-[13px] font-medium text-ink-3">{number ? `عرض ${number}` : "عرض جديد"}</p>
@@ -584,7 +584,7 @@ export function QuoteBuilder({ quoteId, number, status = "draft", projectId, ini
         </div>
 
         {message && (
-          <p role={message.ok ? "status" : "alert"} className={cx("rounded-lg border px-3 py-2 text-sm", message.ok ? "border-success/25 bg-success-soft text-success" : "border-danger/30 bg-danger-soft text-danger")}>
+          <p role={message.ok ? "status" : "alert"} className={cx("rounded-sm border px-3 py-2 text-sm", message.ok ? "border-success/25 bg-success-soft text-success" : "border-danger/30 bg-danger-soft text-danger")}>
             {message.text}
           </p>
         )}

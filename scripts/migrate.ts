@@ -1,6 +1,6 @@
 // Applies pending migrations and seeds the built-in defaults (categories, service catalog, settings row).
-//   Hosted Postgres:  DATABASE_URL=... npm run db:migrate   (run once per deploy)
-//   Local PGlite:     runs automatically on first request; this script is optional.
+// The app does this by itself on first use; run this script when you want it done ahead of time
+// (for example before the first request, or with MITYAF_AUTO_MIGRATE=0).
 import path from "node:path";
 
 try {
@@ -18,7 +18,7 @@ async function main() {
     const { default: postgres } = await import("postgres");
     const { drizzle } = await import("drizzle-orm/postgres-js");
     const { migrate } = await import("drizzle-orm/postgres-js/migrator");
-    const client = postgres(url, { prepare: false, max: 1 });
+    const client = postgres(url, { prepare: false, max: 1, onnotice: () => {} });
     await migrate(drizzle(client), { migrationsFolder: migrationsFolder() });
     await client.end();
     console.log("✓ migrations applied to", new URL(url).host);

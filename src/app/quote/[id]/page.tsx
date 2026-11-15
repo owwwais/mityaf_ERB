@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PrintButton } from "@/components/print-button";
-import { Logo } from "@/components/ui";
+import { BrandLogo, SpectrumBar } from "@/components/ui";
 import { date, money, pct, weeks } from "@/lib/format";
 import { getSettings } from "@/modules/core/queries";
 import { getQuote } from "@/modules/pricing/queries";
 
 export const metadata: Metadata = { title: "عرض سعر" };
+export const dynamic = "force-dynamic";
 
 const lines = (text: string) =>
   text
@@ -30,6 +31,7 @@ export default async function QuotePrintPage({ params }: { params: Promise<{ id:
   const downPayment = ((quote.price + vat) * inputs.downPaymentPct) / 100;
 
   return (
+    <div className="force-light min-h-dvh bg-bg text-ink print:min-h-0 print:bg-transparent">
     <div className="mx-auto max-w-3xl px-4 py-6 sm:py-10 print:max-w-none print:p-0">
       <div className="no-print mb-5 flex flex-wrap items-center justify-between gap-3">
         <Link href={`/pricing/${quote.id}`} className="btn btn-secondary">
@@ -39,20 +41,17 @@ export default async function QuotePrintPage({ params }: { params: Promise<{ id:
       </div>
 
       <article className="card overflow-hidden print:rounded-none print:border-0 print:shadow-none">
-        <div className="h-1.5" style={{ background: "var(--spectrum)" }} aria-hidden />
+        <SpectrumBar className="h-1.5" />
         <div className="p-7 sm:p-10 print:p-0 print:pt-4">
           <header className="flex flex-wrap items-start justify-between gap-6 border-b border-line pb-6">
-            <div className="flex items-center gap-3">
-              <Logo size={44} />
-              <div>
-                <p className="text-2xl leading-tight font-bold">{settings.companyName}</p>
-                <p className="text-[13px] text-ink-3">حلول أعمال وتقنية على مقاس احتياجك</p>
-              </div>
+            <div>
+              <BrandLogo height={44} alwaysLight />
+              <p className="mt-2 text-[13px] text-ink-3">تقنية وأعمال ومنتجات للمنشآت الصغيرة والمتوسطة</p>
             </div>
             <div className="text-sm leading-relaxed">
-              <p className="text-lg font-bold">عرض سعر</p>
+              <p className="text-lg font-bold text-ink-strong">عرض سعر</p>
               <p className="text-ink-2">
-                رقم العرض: <span dir="ltr">{quote.number}</span>
+                رقم العرض: <span dir="ltr" className="font-mono text-[13px]">{quote.number}</span>
               </p>
               <p className="text-ink-2">التاريخ: {date(quote.updatedAt.toISOString())}</p>
               {quote.validUntil && <p className="text-ink-2">صالح حتى: {date(quote.validUntil)}</p>}
@@ -72,7 +71,7 @@ export default async function QuotePrintPage({ params }: { params: Promise<{ id:
           {items.length > 0 && (
             <section className="mt-7">
               <h2 className="mb-2 text-[15px] font-bold">مراحل العمل</h2>
-              <ol className="divide-y divide-line rounded-lg border border-line">
+              <ol className="divide-y divide-line rounded-sm border border-line">
                 {items.map((item, i) => (
                   <li key={i} className="flex gap-3 px-4 py-2.5 text-sm">
                     <span className="num w-5 shrink-0 font-semibold text-ink-3">{i + 1}</span>
@@ -108,7 +107,7 @@ export default async function QuotePrintPage({ params }: { params: Promise<{ id:
             </section>
           )}
 
-          <section className="mt-7 break-inside-avoid rounded-xl bg-surface-2 p-5">
+          <section className="mt-7 break-inside-avoid rounded-md bg-surface-2 p-5">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
                 <p className="text-sm text-ink-2">{monthly ? "قيمة الباقة الشهرية" : "قيمة العرض"}</p>
@@ -165,6 +164,7 @@ export default async function QuotePrintPage({ params }: { params: Promise<{ id:
           </footer>
         </div>
       </article>
+    </div>
     </div>
   );
 }

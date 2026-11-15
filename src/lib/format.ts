@@ -34,8 +34,9 @@ export function compact(n: number): string {
   return isolate(nf0.format(n));
 }
 
+/** 45٪ — العلامة العربية بعد الرقم في ترتيب القراءة، كما تُكتب في بقية نصوص الواجهة. */
 export function pct(n: number, digits: 0 | 1 = 0): string {
-  return isolate(`${(digits ? nf1 : nf0).format(Number.isFinite(n) ? n : 0)}%`);
+  return `${isolate((digits ? nf1 : nf0).format(Number.isFinite(n) ? n : 0))}٪`;
 }
 
 export function hours(n: number): string {

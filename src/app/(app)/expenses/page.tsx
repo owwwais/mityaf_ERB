@@ -78,7 +78,7 @@ export default async function ExpensesPage({ searchParams }: { searchParams: Pro
         >
           <ul className="flex flex-wrap gap-2">
             {pending.map((c) => (
-              <li key={c.id} className="flex items-center gap-3 rounded-lg border border-line py-1.5 ps-3 pe-1.5">
+              <li key={c.id} className="flex items-center gap-3 rounded-sm border border-line py-1.5 ps-3 pe-1.5">
                 <span className="text-sm">
                   {c.name} <span className="font-semibold">{money(c.amount, { digits: 0 })}</span>
                   <span className="text-ink-3"> · {CYCLES[c.cycle].label}</span>
@@ -127,11 +127,11 @@ export default async function ExpensesPage({ searchParams }: { searchParams: Pro
             <table className="table">
               <thead>
                 <tr>
-                  <th>التاريخ</th>
+                  <th className="max-md:hidden">التاريخ</th>
                   <th>الوصف</th>
-                  <th>الفئة</th>
-                  <th>المشروع</th>
-                  <th>دُفع من</th>
+                  <th className="max-md:hidden">الفئة</th>
+                  <th className="max-md:hidden">المشروع</th>
+                  <th className="max-md:hidden">دُفع من</th>
                   <th className="cell-num">المبلغ</th>
                   <th className="cell-actions" />
                 </tr>
@@ -139,15 +139,19 @@ export default async function ExpensesPage({ searchParams }: { searchParams: Pro
               <tbody>
                 {rows.map((e) => (
                   <tr key={e.id}>
-                    <td className="whitespace-nowrap text-ink-2">{dateShort(e.date)}</td>
-                    <td className="min-w-44">
+                    <td className="whitespace-nowrap text-ink-2 max-md:hidden">{dateShort(e.date)}</td>
+                    <td className="md:min-w-44">
                       <span className="font-medium">{e.description}</span>
                       {e.operatingCostId && <Repeat size={13} className="ms-1.5 inline text-ink-3" aria-label="بند متكرر" />}
                       {e.vendor && <span className="block text-xs text-ink-3">{e.vendor}</span>}
+                      {/* على الجوال: الأعمدة المخفية تُختصر في سطر واحد */}
+                      <span className="mt-0.5 block text-xs leading-relaxed text-ink-3 md:hidden">
+                        {[dateShort(e.date), e.categoryName, e.projectName, e.paidByName ?? TREASURY_LABEL].filter(Boolean).join(" · ")}
+                      </span>
                     </td>
-                    <td>{e.categoryName ? <Badge>{e.categoryName}</Badge> : <span className="text-ink-3">—</span>}</td>
-                    <td className="text-ink-2">{e.projectName ?? <span className="text-ink-3">عام</span>}</td>
-                    <td className="whitespace-nowrap text-ink-2">{e.paidByName ?? TREASURY_LABEL}</td>
+                    <td className="max-md:hidden">{e.categoryName ? <Badge>{e.categoryName}</Badge> : <span className="text-ink-3">—</span>}</td>
+                    <td className="text-ink-2 max-md:hidden">{e.projectName ?? <span className="text-ink-3">عام</span>}</td>
+                    <td className="whitespace-nowrap text-ink-2 max-md:hidden">{e.paidByName ?? TREASURY_LABEL}</td>
                     <td className="cell-num font-semibold">{money(e.amount)}</td>
                     <td className="cell-actions">
                       <div className="flex items-center">
@@ -162,9 +166,10 @@ export default async function ExpensesPage({ searchParams }: { searchParams: Pro
               </tbody>
               <tfoot>
                 <tr>
-                  <td colSpan={5} className="border-t border-line px-4 py-3 text-sm text-ink-3">
+                  <td className="border-t border-line px-4 py-3 text-sm text-ink-3">
                     {rows.length} حركة{filtered ? " (بعد التصفية)" : ""}
                   </td>
+                  <td colSpan={4} className="border-t border-line max-md:hidden" />
                   <td className="cell-num border-t border-line px-4 py-3 font-bold">{money(shownTotal)}</td>
                   <td className="border-t border-line" />
                 </tr>

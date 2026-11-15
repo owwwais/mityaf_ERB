@@ -75,10 +75,10 @@ export default async function RevenuePage({ searchParams }: { searchParams: Prom
               <table className="table">
                 <thead>
                   <tr>
-                    <th>التاريخ</th>
+                    <th className="max-md:hidden">التاريخ</th>
                     <th>المشروع / العميل</th>
-                    <th>النوع</th>
-                    <th>استلمها</th>
+                    <th className="max-md:hidden">النوع</th>
+                    <th className="max-md:hidden">استلمها</th>
                     <th className="cell-num">المبلغ</th>
                     <th className="cell-actions" />
                   </tr>
@@ -86,8 +86,8 @@ export default async function RevenuePage({ searchParams }: { searchParams: Prom
                 <tbody>
                   {rows.map((p) => (
                     <tr key={p.id}>
-                      <td className="whitespace-nowrap text-ink-2">{dateShort(p.date)}</td>
-                      <td className="min-w-44">
+                      <td className="whitespace-nowrap text-ink-2 max-md:hidden">{dateShort(p.date)}</td>
+                      <td className="md:min-w-44">
                         {p.projectId ? (
                           <Link href={`/projects/${p.projectId}`} className="font-medium hover:underline">
                             {p.projectName}
@@ -96,9 +96,12 @@ export default async function RevenuePage({ searchParams }: { searchParams: Prom
                           <span className="font-medium">إيراد عام</span>
                         )}
                         {p.clientName && <span className="block text-xs text-ink-3">{p.clientName}</span>}
+                        <span className="mt-0.5 block text-xs leading-relaxed text-ink-3 md:hidden">
+                          {[dateShort(p.date), PAYMENT_KINDS[p.kind as PaymentKind] ?? p.kind, `استلمها ${p.receivedByName ?? TREASURY_LABEL}`].join(" · ")}
+                        </span>
                       </td>
-                      <td><Badge>{PAYMENT_KINDS[p.kind as PaymentKind] ?? p.kind}</Badge></td>
-                      <td className="whitespace-nowrap text-ink-2">{p.receivedByName ?? TREASURY_LABEL}</td>
+                      <td className="max-md:hidden"><Badge>{PAYMENT_KINDS[p.kind as PaymentKind] ?? p.kind}</Badge></td>
+                      <td className="whitespace-nowrap text-ink-2 max-md:hidden">{p.receivedByName ?? TREASURY_LABEL}</td>
                       <td className="cell-num font-semibold text-success">{money(p.amount)}</td>
                       <td className="cell-actions">
                         <div className="flex items-center">

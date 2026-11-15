@@ -13,7 +13,7 @@ export const metadata: Metadata = { title: "التسعير" };
 
 function Term({ label, value, tone }: { label: string; value: string; tone?: "result" }) {
   return (
-    <div className={tone === "result" ? "rounded-lg bg-primary-soft px-3.5 py-2.5" : "rounded-lg bg-surface-2 px-3.5 py-2.5"}>
+    <div className={tone === "result" ? "rounded-sm bg-primary-soft px-3.5 py-2.5" : "rounded-sm bg-surface-2 px-3.5 py-2.5"}>
       <p className="text-[11.5px] text-ink-3">{label}</p>
       <p className={tone === "result" ? "text-base font-bold text-primary-ink" : "text-base font-semibold"}>{value}</p>
     </div>
@@ -123,7 +123,7 @@ export default async function PricingPage() {
           )}
         </div>
 
-        <div className="table-wrap mt-5 rounded-lg border border-line">
+        <div className="table-wrap mt-5 rounded-sm border border-line">
           <table className="table">
             <thead>
               <tr>

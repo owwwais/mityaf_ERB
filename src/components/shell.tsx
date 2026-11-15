@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 import { LogOut, Menu, X } from "lucide-react";
 import { GROUP_LABELS, MODULES, type ModuleGroup } from "@/modules/registry";
-import { Logo, cx } from "./ui";
+import { BrandLogo, cx } from "./ui";
 
 const GROUPS: ModuleGroup[] = ["main", "finance", "work", "system"];
 
@@ -22,7 +22,7 @@ function Nav({ onNavigate }: { onNavigate?: () => void }) {
         if (!items.length) return null;
         return (
           <div key={group}>
-            {GROUP_LABELS[group] && <p className="mb-1.5 px-3 text-[11px] font-semibold tracking-wide text-white/40">{GROUP_LABELS[group]}</p>}
+            {GROUP_LABELS[group] && <p className="eyebrow mb-1.5 px-3">{GROUP_LABELS[group]}</p>}
             <ul className="space-y-0.5">
               {items.map((m) => {
                 const active = isActive(pathname, m.href);
@@ -34,12 +34,12 @@ function Nav({ onNavigate }: { onNavigate?: () => void }) {
                       onClick={onNavigate}
                       aria-current={active ? "page" : undefined}
                       className={cx(
-                        "relative flex h-10 items-center gap-3 rounded-lg px-3 text-sm font-medium transition-colors",
-                        active ? "bg-white/10 text-white" : "text-[var(--sidebar-text)] hover:bg-white/5 hover:text-white",
+                        "flex h-10 items-center gap-3 rounded-sm px-3 text-[14.5px] transition-colors",
+                        // العنصر النشط خانة داكنة مصمتة، كزر الدعوة في ترويسة الموقع
+                        active ? "bg-primary font-semibold text-primary-fg" : "font-medium text-ink-2 hover:bg-surface-2 hover:text-ink-strong",
                       )}
                     >
-                      {active && <span className="absolute inset-y-2 start-0 w-[3px] rounded-full" style={{ background: "var(--spectrum)" }} aria-hidden />}
-                      <Icon size={18} strokeWidth={1.9} aria-hidden />
+                      <Icon size={18} strokeWidth={1.8} aria-hidden />
                       {m.label}
                     </Link>
                   </li>
@@ -55,11 +55,10 @@ function Nav({ onNavigate }: { onNavigate?: () => void }) {
 
 function Brand({ company }: { company: string }) {
   return (
-    <Link href="/" className="flex h-16 shrink-0 items-center gap-2.5 px-5 text-white">
-      <Logo size={30} />
-      <span className="leading-tight">
-        <span className="block text-[17px] font-bold">{company}</span>
-        <span className="block text-[11px] text-white/45">نظام إدارة الموارد</span>
+    <Link href="/" className="flex h-16 shrink-0 items-center justify-between gap-3 border-b border-line px-5" aria-label={company}>
+      <BrandLogo height={27} />
+      <span className="eyebrow" dir="ltr">
+        ERP
       </span>
     </Link>
   );
@@ -67,13 +66,13 @@ function Brand({ company }: { company: string }) {
 
 function UserBox({ name, logout }: { name: string; logout: () => Promise<void> }) {
   return (
-    <div className="flex shrink-0 items-center gap-3 border-t border-white/10 px-4 py-3">
-      <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-white/10 text-sm font-bold text-white" aria-hidden>
+    <div className="flex shrink-0 items-center gap-3 border-t border-line px-4 py-3">
+      <span className="flex size-9 shrink-0 items-center justify-center rounded-sm bg-surface-2 text-sm font-bold text-ink-strong" aria-hidden>
         {name.trim().charAt(0) || "؟"}
       </span>
-      <span className="min-w-0 flex-1 truncate text-sm font-medium text-white">{name}</span>
+      <span className="min-w-0 flex-1 truncate text-sm font-medium text-ink">{name}</span>
       <form action={logout}>
-        <button type="submit" className="flex size-9 items-center justify-center rounded-lg text-[var(--sidebar-text)] hover:bg-white/10 hover:text-white" aria-label="تسجيل الخروج" title="تسجيل الخروج">
+        <button type="submit" className="btn btn-ghost btn-icon size-9" aria-label="تسجيل الخروج" title="تسجيل الخروج">
           <LogOut size={17} className="-scale-x-100" />
         </button>
       </form>
@@ -106,7 +105,7 @@ export function AppShell({
   return (
     <div className="min-h-dvh lg:ps-64">
       {/* Desktop sidebar */}
-      <aside className="no-print fixed inset-y-0 start-0 z-30 hidden w-64 flex-col bg-sidebar lg:flex">
+      <aside className="no-print fixed inset-y-0 start-0 z-30 hidden w-64 flex-col border-e border-line bg-surface lg:flex">
         <Brand company={company} />
         <Nav />
         <UserBox name={userName} logout={logout} />
@@ -117,18 +116,18 @@ export function AppShell({
         <button type="button" className="btn btn-ghost btn-icon -ms-1.5" onClick={() => setOpen(true)} aria-label="فتح القائمة">
           <Menu size={20} />
         </button>
-        <Logo size={24} />
-        <span className="truncate font-bold">{current?.label ?? company}</span>
+        <BrandLogo height={22} />
+        {current && <span className="truncate border-s border-line ps-3 text-sm text-ink-2">{current.label}</span>}
       </header>
 
       {/* Mobile drawer */}
       {open && (
         <div className="no-print fixed inset-0 z-40 lg:hidden">
-          <button type="button" className="absolute inset-0 bg-black/55" aria-label="إغلاق القائمة" onClick={() => setOpen(false)} />
-          <aside className="absolute inset-y-0 start-0 flex w-72 max-w-[85vw] flex-col bg-sidebar shadow-pop">
-            <div className="flex items-center justify-between pe-3">
+          <div className="absolute inset-0 bg-[#111514]/50" onClick={() => setOpen(false)} aria-hidden />
+          <aside className="absolute inset-y-0 start-0 flex w-72 max-w-[85vw] flex-col border-e border-line bg-surface shadow-pop">
+            <div className="relative">
               <Brand company={company} />
-              <button type="button" className="flex size-9 items-center justify-center rounded-lg text-white/70 hover:bg-white/10" onClick={() => setOpen(false)} aria-label="إغلاق القائمة">
+              <button type="button" className="btn btn-ghost btn-icon absolute inset-y-0 end-3 my-auto size-9 bg-surface" onClick={() => setOpen(false)} aria-label="إغلاق القائمة">
                 <X size={19} />
               </button>
             </div>
